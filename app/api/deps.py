@@ -44,7 +44,7 @@ def get_current_user(db: Session = Depends(get_db_session), token: str = Depends
     if token_data.sub is None:
         raise credentials_exception
 
-    user = db.query(User).filter(User.id == token_data.sub).first()
+    user = db.query(User).filter(User.user_id == token_data.sub).first()
     if user is None:
         raise credentials_exception
     return user

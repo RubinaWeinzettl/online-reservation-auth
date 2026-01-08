@@ -6,7 +6,6 @@ from pydantic import BaseModel, EmailStr, Field
 
 class UserBase(BaseModel):
     email: EmailStr
-    role: str = Field(default="customer", description="Role of the user")
 
 
 class UserCreate(UserBase):
@@ -19,7 +18,9 @@ class UserLogin(BaseModel):
 
 
 class UserRead(UserBase):
-    id: str
+    user_id: str
+    email_norm: str
+    is_active: bool
     created_at: datetime
     updated_at: datetime
 
