@@ -20,8 +20,9 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db_session)) ->
 
     user = User(
         email=user_in.email,
+        email_norm=user_in.email.lower(),
         password_hash=get_password_hash(user_in.password),
-        role=user_in.role,
+        is_active=True,
     )
     db.add(user)
     db.commit()
@@ -33,7 +34,7 @@ def register_user(user_in: UserCreate, db: Session = Depends(get_db_session)) ->
 def login(user_in: UserLogin, db: Session = Depends(get_db_session)) -> Token:
     user = authenticate_user(db, user_in.email, user_in.password)
     access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
-    token = create_access_token(subject=user.id, expires_delta=access_token_expires)
+    token = create_access_token(subject=user.user_id, expires_delta=access_token_expires)
     return Token(access_token=token)
 
 
