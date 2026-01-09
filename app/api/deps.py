@@ -1,3 +1,24 @@
+"""
+FastAPI dependencies for authentication and database access.
+
+This module defines reusable dependencies used across the API layer,
+including:
+
+- Database session handling via SQLAlchemy
+- User authentication using email and password verification
+- Retrieval of the currently authenticated user based on JWT tokens
+
+The dependencies in this module are designed to keep business endpoints
+clean and focused, while centralizing infrastructure-related concerns
+such as security and persistence.
+
+Typical usage:
+- Inject a database session with Depends(get_db_session)
+- Authenticate users during login with authenticate_user
+- Protect endpoints by injecting the current user with Depends(get_current_user)
+"""
+
+
 from typing import Generator
 
 from fastapi import Depends, HTTPException, status
@@ -11,7 +32,7 @@ from app.db.session import get_db
 from app.models.user import User
 from app.schemas.user import TokenPayload
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 
 
 def get_db_session() -> Generator[Session, None, None]:
